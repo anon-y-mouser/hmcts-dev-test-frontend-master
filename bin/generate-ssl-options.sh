@@ -26,6 +26,8 @@ then
       -config <(cat /System/Library/OpenSSL/openssl.cnf \
       <(printf '[v3_new]\nsubjectAltName=DNS:host.docker.internal,DNS:localhost,IP:127.0.0.1\nextendedKeyUsage=serverAuth'))
   else
+    export MSYS_NO_PATHCONV=1
+
     openssl req \
       -nodes \
       -x509 \

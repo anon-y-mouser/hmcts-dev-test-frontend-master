@@ -1,5 +1,6 @@
 {% from "govuk/components/button/macro.njk" import govukButton %}
 {% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
 
 {% extends "template.njk" %}
 
@@ -9,18 +10,28 @@
   <form method="post" action="/cases">
     <div class="govuk-form-group">
       <label class="govuk-label" for="title">Title</label>
-      <input class="govuk-input" id="title" name="title" type="text" required>
+      <input class="govuk-input" id="title" name="title" type="text" value="{{ form.title }}" required>
     </div>
 
-    <div class="govuk-form-group">
-      <label class="govuk-label" for="description">Description</label>
-      <textarea class="govuk-textarea" id="description" name="description" rows="5" required></textarea>
-    </div>
+    {{ govukCharacterCount({
+      id: "description",
+      name: "description",
+      maxlength: 200,
+      rows: 5,
+      value: form.description,
+      label: {
+        text: "Description"
+      },
+      errorMessage: descriptionError,
+      attributes: {
+        required: true
+      }
+    }) }}
 
     {{ govukSelect({
       id: "status",
       name: "status",
-      value: "OPEN",
+      value: form.status or "OPEN",
       label: {
         text: "Status"
       },
@@ -34,7 +45,7 @@
 
     <div class="govuk-form-group">
       <label class="govuk-label" for="dueDate">Due date</label>
-      <input class="govuk-input" id="dueDate" name="dueDate" type="datetime-local" required>
+      <input class="govuk-input" id="dueDate" name="dueDate" type="datetime-local" value="{{ form.dueDate }}" required>
     </div>
 
     <div class="govuk-button-group">

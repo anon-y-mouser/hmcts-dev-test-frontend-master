@@ -23,10 +23,18 @@ export default function (app: Application): void {
   });
 
   app.get('/cases/new', (req, res) => {
-    res.render('new');
+    res.render('new', { form: {} });
   });
 
   app.post('/cases', async (req, res) => {
+    if (typeof req.body.description !== 'string' || req.body.description.length > 200) {
+      res.status(400).render('new', {
+        form: req.body,
+        descriptionError: { text: 'Description must be 200 characters or fewer.' }
+      });
+      return;
+    }
+
     try {
       await axios.post('http://localhost:4000/cases/', {
         title: req.body.title,
@@ -69,6 +77,14 @@ export default function (app: Application): void {
   });
 
   app.post('/cases/:id/edit', async (req, res) => {
+    if (typeof req.body.description !== 'string' || req.body.description.length > 200) {
+      res.status(400).render('edit', {
+        item: { ...req.body, id: req.params.id },
+        descriptionError: { text: 'Description must be 200 characters or fewer.' }
+      });
+      return;
+    }
+
     try {
       await axios.put(`http://localhost:4000/cases/${encodeURIComponent(req.params.id)}`, {
         title: req.body.title,

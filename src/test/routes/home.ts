@@ -59,6 +59,8 @@ describe('Case routes', () => {
     expect(response.text).toContain('<option value="IN_PROGRESS">');
     expect(response.text).toContain('<option value="COMPLETED">');
     expect(response.text).toContain('<option value="CANCELLED">');
+    expect(response.text).toContain('data-maxlength="200"');
+    expect(response.text).toContain('govuk-character-count__message');
     expect(response.text).toContain('Cancel');
   });
 
@@ -80,6 +82,21 @@ describe('Case routes', () => {
     });
   });
 
+  test('shows a validation error when a new case description exceeds 200 characters', async () => {
+    const description = 'a'.repeat(201);
+
+    const response = await request(app)
+      .post('/cases')
+      .type('form')
+      .send({ ...caseItem, description })
+      .expect(400);
+
+    expect(response.text).toContain('Description must be 200 characters or fewer.');
+    expect(response.text).toContain('value="Review application"');
+    expect(response.text).toContain(description);
+    expect(jest.mocked(axios.post)).not.toHaveBeenCalled();
+  });
+
   test('loads the selected case into the edit form', async () => {
     jest.mocked(axios.get).mockResolvedValue(axiosResponse([caseItem]));
 
@@ -89,6 +106,8 @@ describe('Case routes', () => {
     expect(response.text).toContain('value="Review application"');
     expect(response.text).toContain('value="OPEN"');
     expect(response.text).toContain('action="/cases/1/edit"');
+    expect(response.text).toContain('data-maxlength="200"');
+    expect(response.text).toContain('govuk-character-count__message');
   });
 
   test('updates a case and redirects to the case list', async () => {
@@ -107,6 +126,21 @@ describe('Case routes', () => {
       status: caseItem.status,
       dueDate: caseItem.dueDate
     });
+  });
+
+  test('shows a validation error when an updated description exceeds 200 characters', async () => {
+    const description = 'a'.repeat(201);
+
+    const response = await request(app)
+      .post('/cases/1/edit')
+      .type('form')
+      .send({ ...caseItem, description })
+      .expect(400);
+
+    expect(response.text).toContain('Description must be 200 characters or fewer.');
+    expect(response.text).toContain('value="Review application"');
+    expect(response.text).toContain(description);
+    expect(jest.mocked(axios.put)).not.toHaveBeenCalled();
   });
 
   test('deletes a case and redirects to the case list', async () => {

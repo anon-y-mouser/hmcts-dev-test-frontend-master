@@ -1,6 +1,6 @@
 {% from "govuk/components/select/macro.njk" import govukSelect %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
 {% extends "template.njk" %}
 
 {% block content %}
@@ -12,10 +12,20 @@
       <input class="govuk-input" id="title" name="title" type="text" value="{{ item.title }}" required>
     </div>
 
-    <div class="govuk-form-group">
-      <label class="govuk-label" for="description">Description</label>
-      <textarea class="govuk-textarea" id="description" name="description" rows="5" required>{{ item.description }}</textarea>
-    </div>
+    {{ govukCharacterCount({
+      id: "description",
+      name: "description",
+      maxlength: 200,
+      rows: 5,
+      value: item.description,
+      label: {
+        text: "Description"
+      },
+      errorMessage: descriptionError,
+      attributes: {
+        required: true
+      }
+    }) }}
 
     {{ govukSelect({
       id: "status",

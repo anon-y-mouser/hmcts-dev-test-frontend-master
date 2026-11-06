@@ -1,13 +1,29 @@
 # HMCTS Dev Test Frontend
 
-This will be the frontend for the brand new HMCTS case management system. As a potential candidate we are leaving
-this in your hands. Please refer to the brief for the complete list of tasks! Complete as much as you can and be
-as creative as you want.
+A case management frontend built with Express and TypeScript, GOV.UK Frontend components, and Nunjucks templates. It lists, creates, edits, and deletes cases through a backend API.
 
-To begin with, you should be able to run this by running:
+## Run locally
 
-1. `yarn install`
-2. `yarn webpack`
-3. `yarn start:dev` or navigate to package.json and run the script manually
+Install dependencies and build the frontend assets:
 
-You can change the structure however you like!
+```sh
+yarn install
+yarn webpack
+```
+
+Start the case API on `http://localhost:4000`, then start the frontend:
+
+```sh
+yarn start:dev
+```
+
+The frontend requests cases from `GET http://localhost:4000/cases/`. It uses the same API base for create (`POST /cases/`), update (`PUT /cases/:id`), and delete (`DELETE /cases/:id`).
+
+## Forms and validation
+
+The add and edit pages share their title, description, status, and due-date fields through `src/main/views/macros/case-form-fields.njk`.
+
+- Description uses the GOV.UK character-count component with a 200-character limit. The counter gives users feedback in the browser.
+- The server independently checks that the description is a string of no more than 200 characters on both create and update. Invalid submissions return HTTP 400, display an inline error, and preserve the submitted values without calling the API.
+- Status is selected from `OPEN`, `IN_PROGRESS`, `COMPLETED`, or `CANCELLED`. New cases default to `OPEN`.
+- Required fields also use HTML `required` attributes for browser validation.

@@ -2,6 +2,8 @@
 
 A case management frontend built with Express and TypeScript, GOV.UK Frontend components, and Nunjucks templates. It lists, creates, edits, and deletes cases through a backend API.
 
+![Case list screenshot](./screenshot.png)
+
 ## Run locally
 
 Install dependencies and build the frontend assets:
@@ -20,6 +22,8 @@ yarn start:dev
 The frontend requests cases from `GET http://localhost:4000/cases/`. It uses the same API base for create (`POST /cases/`), update (`PUT /cases/:id`), and delete (`DELETE /cases/:id`).
 
 ## Forms and validation
+
+![Case update screenshot](./screenshot_update.png)
 
 The add and edit pages share their title, description, status, and due-date fields through `src/main/views/macros/case-form-fields.njk`.
 

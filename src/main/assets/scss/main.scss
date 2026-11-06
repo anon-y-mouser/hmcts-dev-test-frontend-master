@@ -1,1 +1,6 @@
 @use 'govuk-frontend' as *;
+
+.case-list {
+  max-height: 60vh;
+  overflow-y: auto;
+}

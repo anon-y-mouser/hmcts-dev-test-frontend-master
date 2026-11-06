@@ -1,0 +1,35 @@
+{% extends "template.njk" %}
+
+{% block content %}
+  <h1 class="govuk-heading-xl">Change case</h1>
+
+  <form method="post" action="/cases/{{ item.id }}/edit">
+    <div class="govuk-form-group">
+      <label class="govuk-label" for="title">Title</label>
+      <input class="govuk-input" id="title" name="title" type="text" value="{{ item.title }}" required>
+    </div>
+
+    <div class="govuk-form-group">
+      <label class="govuk-label" for="description">Description</label>
+      <textarea class="govuk-textarea" id="description" name="description" rows="5" required>{{ item.description }}</textarea>
+    </div>
+
+    <div class="govuk-form-group">
+      <label class="govuk-label" for="status">Status</label>
+      <select class="govuk-select" id="status" name="status" required>
+        <option value="OPEN" {% if item.status == "OPEN" %}selected{% endif %}>OPEN</option>
+        <option value="IN_PROGRESS" {% if item.status == "IN_PROGRESS" %}selected{% endif %}>IN_PROGRESS</option>
+        <option value="COMPLETED" {% if item.status == "COMPLETED" %}selected{% endif %}>COMPLETED</option>
+        <option value="CANCELLED" {% if item.status == "CANCELLED" %}selected{% endif %}>CANCELLED</option>
+      </select>
+    </div>
+
+    <div class="govuk-form-group">
+      <label class="govuk-label" for="dueDate">Due date</label>
+      <input class="govuk-input" id="dueDate" name="dueDate" type="text" value="{{ item.dueDate }}" required>
+    </div>
+
+    <button class="govuk-button" type="submit">Save changes</button>
+    <a class="govuk-link" href="/">Cancel</a>
+  </form>
+{% endblock %}

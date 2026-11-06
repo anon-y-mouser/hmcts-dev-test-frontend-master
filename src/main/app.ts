@@ -5,7 +5,7 @@ import { Nunjucks } from './modules/nunjucks';
 
 import cookieParser from 'cookie-parser';
 import express from 'express';
-import { glob } from 'glob';
+import * as glob from 'glob';
 import favicon from 'serve-favicon';
 
 const { setupDev } = require('./development');
@@ -29,11 +29,16 @@ app.use((req, res, next) => {
 });
 
 glob
-  .sync(path.join(__dirname, 'routes/**/*.+(ts|js)'))
-  .map(filename => require(path.resolve(filename)))
+  .sync('routes/**/*.+(ts|js)', {
+    cwd: __dirname,
+    nodir: true
+  })
+  .map(filename => require(path.resolve(__dirname, filename)))
   .forEach(route => route.default(app));
 
+
 setupDev(app, developmentMode);
+
 
 // error handler
 app.use((err: HTTPError, req: express.Request, res: express.Response, next: express.NextFunction) => {

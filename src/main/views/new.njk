@@ -1,0 +1,39 @@
+{% from "govuk/components/button/macro.njk" import govukButton %}
+
+{% extends "template.njk" %}
+
+{% block content %}
+  <h1 class="govuk-heading-xl">Add new case</h1>
+
+  <form method="post" action="/cases">
+    <div class="govuk-form-group">
+      <label class="govuk-label" for="title">Title</label>
+      <input class="govuk-input" id="title" name="title" type="text" required>
+    </div>
+
+    <div class="govuk-form-group">
+      <label class="govuk-label" for="description">Description</label>
+      <textarea class="govuk-textarea" id="description" name="description" rows="5" required></textarea>
+    </div>
+
+    <div class="govuk-form-group">
+      <label class="govuk-label" for="status">Status</label>
+      <select class="govuk-select" id="status" name="status" required>
+        <option value="OPEN" selected>OPEN</option>
+        <option value="IN_PROGRESS">IN_PROGRESS</option>
+        <option value="COMPLETED">COMPLETED</option>
+        <option value="CANCELLED">CANCELLED</option>
+      </select>
+    </div>
+
+    <div class="govuk-form-group">
+      <label class="govuk-label" for="dueDate">Due date</label>
+      <input class="govuk-input" id="dueDate" name="dueDate" type="datetime-local" required>
+    </div>
+
+    {{ govukButton({
+      text: "Add case"
+    }) }}
+    <a class="govuk-link" href="/">Cancel</a>
+  </form>
+{% endblock %}

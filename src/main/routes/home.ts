@@ -30,7 +30,7 @@ export default function (app: Application): void {
     if (typeof req.body.description !== 'string' || req.body.description.length > 200) {
       res.status(400).render('new', {
         form: req.body,
-        descriptionError: { text: 'Description must be 200 characters or fewer.' }
+        descriptionError: { text: 'Description must be 2000 characters or fewer.' }
       });
       return;
     }

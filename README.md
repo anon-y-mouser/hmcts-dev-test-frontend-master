@@ -27,7 +27,7 @@ The frontend requests cases from `GET http://localhost:4000/cases/`. It uses the
 
 The add and edit pages share their title, description, status, and due-date fields through `src/main/views/macros/case-form-fields.njk`.
 
-- Description uses the GOV.UK character-count component with a 200-character limit. The counter gives users feedback in the browser.
-- The server independently checks that the description is a string of no more than 200 characters on both create and update. Invalid submissions return HTTP 400, display an inline error, and preserve the submitted values without calling the API.
+- Description uses the GOV.UK character-count component with a 2000-character limit. The counter gives users feedback in the browser.
+- The server independently checks that the description is a string of no more than 2000 characters on both create and update. Invalid submissions return HTTP 400, display an inline error, and preserve the submitted values without calling the API.
 - Status is selected from `OPEN`, `IN_PROGRESS`, `COMPLETED`, or `CANCELLED`. New cases default to `OPEN`.
 - Required fields also use HTML `required` attributes for browser validation.

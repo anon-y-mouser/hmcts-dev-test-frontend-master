@@ -1,51 +1,16 @@
-{% from "govuk/components/select/macro.njk" import govukSelect %}
 {% from "govuk/components/button/macro.njk" import govukButton %}
-{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+{% from "macros/case-form-fields.njk" import caseFormFields %}
 {% extends "template.njk" %}
 
 {% block content %}
   <h1 class="govuk-heading-xl">Update Case</h1>
 
   <form method="post" action="/cases/{{ item.id }}/edit">
-    <div class="govuk-form-group">
-      <label class="govuk-label" for="title">Title</label>
-      <input class="govuk-input" id="title" name="title" type="text" value="{{ item.title }}" required>
-    </div>
-
-    {{ govukCharacterCount({
-      id: "description",
-      name: "description",
-      maxlength: 200,
-      rows: 5,
-      value: item.description,
-      label: {
-        text: "Description"
-      },
-      errorMessage: descriptionError,
-      attributes: {
-        required: true
-      }
+    {{ caseFormFields({
+      caseData: item,
+      descriptionError: descriptionError,
+      dueDateType: "text"
     }) }}
-
-    {{ govukSelect({
-      id: "status",
-      name: "status",
-      value: item.status,
-      label: {
-        text: "Status"
-      },
-      items: [
-        { value: "OPEN", text: "OPEN" },
-        { value: "IN_PROGRESS", text: "IN_PROGRESS" },
-        { value: "COMPLETED", text: "COMPLETED" },
-        { value: "CANCELLED", text: "CANCELLED" }
-      ]
-    }) }}
-
-    <div class="govuk-form-group">
-      <label class="govuk-label" for="dueDate">Due date</label>
-      <input class="govuk-input" id="dueDate" name="dueDate" type="text" value="{{ item.dueDate }}" required>
-    </div>
 
     <div class="govuk-button-group">
       {{ govukButton({

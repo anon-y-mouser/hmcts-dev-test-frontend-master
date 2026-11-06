@@ -1,0 +1,44 @@
+{% from "govuk/components/select/macro.njk" import govukSelect %}
+{% from "govuk/components/character-count/macro.njk" import govukCharacterCount %}
+
+{% macro caseFormFields(params) %}
+  <div class="govuk-form-group">
+    <label class="govuk-label" for="title">Title</label>
+    <input class="govuk-input" id="title" name="title" type="text" value="{{ params.caseData.title }}" required>
+  </div>
+
+  {{ govukCharacterCount({
+    id: "description",
+    name: "description",
+    maxlength: 200,
+    rows: 5,
+    value: params.caseData.description,
+    label: {
+      text: "Description"
+    },
+    errorMessage: params.descriptionError,
+    attributes: {
+      required: true
+    }
+  }) }}
+
+  {{ govukSelect({
+    id: "status",
+    name: "status",
+    value: params.caseData.status or "OPEN",
+    label: {
+      text: "Status"
+    },
+    items: [
+      { value: "OPEN", text: "OPEN" },
+      { value: "IN_PROGRESS", text: "IN_PROGRESS" },
+      { value: "COMPLETED", text: "COMPLETED" },
+      { value: "CANCELLED", text: "CANCELLED" }
+    ]
+  }) }}
+
+  <div class="govuk-form-group">
+    <label class="govuk-label" for="dueDate">Due date</label>
+    <input class="govuk-input" id="dueDate" name="dueDate" type="{{ params.dueDateType }}" value="{{ params.caseData.dueDate }}" required>
+  </div>
+{% endmacro %}

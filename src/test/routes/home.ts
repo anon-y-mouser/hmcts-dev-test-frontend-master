@@ -59,7 +59,7 @@ describe('Case routes', () => {
     expect(response.text).toContain('<option value="IN_PROGRESS">');
     expect(response.text).toContain('<option value="COMPLETED">');
     expect(response.text).toContain('<option value="CANCELLED">');
-    expect(response.text).toContain('data-maxlength="200"');
+    expect(response.text).toContain('data-maxlength="2000"');
     expect(response.text).toContain('govuk-character-count__message');
     expect(response.text).toContain('Cancel');
   });
@@ -82,8 +82,8 @@ describe('Case routes', () => {
     });
   });
 
-  test('shows a validation error when a new case description exceeds 200 characters', async () => {
-    const description = 'a'.repeat(201);
+  test('shows a validation error when a new case description exceeds 2000 characters', async () => {
+    const description = 'a'.repeat(2001);
 
     const response = await request(app)
       .post('/cases')
@@ -91,7 +91,7 @@ describe('Case routes', () => {
       .send({ ...caseItem, description })
       .expect(400);
 
-    expect(response.text).toContain('Description must be 200 characters or fewer.');
+    expect(response.text).toContain('Description must be 2000 characters or fewer.');
     expect(response.text).toContain('value="Review application"');
     expect(response.text).toContain(description);
     expect(jest.mocked(axios.post)).not.toHaveBeenCalled();
@@ -106,7 +106,7 @@ describe('Case routes', () => {
     expect(response.text).toContain('value="Review application"');
     expect(response.text).toContain('value="OPEN"');
     expect(response.text).toContain('action="/cases/1/edit"');
-    expect(response.text).toContain('data-maxlength="200"');
+    expect(response.text).toContain('data-maxlength="2000"');
     expect(response.text).toContain('govuk-character-count__message');
   });
 
@@ -128,8 +128,8 @@ describe('Case routes', () => {
     });
   });
 
-  test('shows a validation error when an updated description exceeds 200 characters', async () => {
-    const description = 'a'.repeat(201);
+  test('shows a validation error when an updated description exceeds 2000 characters', async () => {
+    const description = 'a'.repeat(2001);
 
     const response = await request(app)
       .post('/cases/1/edit')
@@ -137,7 +137,7 @@ describe('Case routes', () => {
       .send({ ...caseItem, description })
       .expect(400);
 
-    expect(response.text).toContain('Description must be 200 characters or fewer.');
+    expect(response.text).toContain('Description must be 2000 characters or fewer.');
     expect(response.text).toContain('value="Review application"');
     expect(response.text).toContain(description);
     expect(jest.mocked(axios.put)).not.toHaveBeenCalled();

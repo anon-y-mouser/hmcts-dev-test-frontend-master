@@ -27,7 +27,7 @@ export default function (app: Application): void {
   });
 
   app.post('/cases', async (req, res) => {
-    if (typeof req.body.description !== 'string' || req.body.description.length > 200) {
+    if (typeof req.body.description !== 'string' || req.body.description.length > 2000) {
       res.status(400).render('new', {
         form: req.body,
         descriptionError: { text: 'Description must be 2000 characters or fewer.' }
@@ -77,10 +77,10 @@ export default function (app: Application): void {
   });
 
   app.post('/cases/:id/edit', async (req, res) => {
-    if (typeof req.body.description !== 'string' || req.body.description.length > 200) {
+    if (typeof req.body.description !== 'string' || req.body.description.length > 2000) {
       res.status(400).render('edit', {
         item: { ...req.body, id: req.params.id },
-        descriptionError: { text: 'Description must be 200 characters or fewer.' }
+        descriptionError: { text: 'Description must be 2000 characters or fewer.' }
       });
       return;
     }
